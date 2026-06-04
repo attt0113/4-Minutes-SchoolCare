@@ -72,3 +72,7 @@ To ensure a healthy safety buffer and long-term financial health, we have set a 
 
 ### 📝 Conclusion
 Based on our estimated total cost and a 3-year break-even target, the minimum sustainable price is around RM 148 per school per year. Therefore, the product is priced at **RM 168 per school per year** to ensure long-term commercial sustainability while remaining accessible to public institutions.
+
+---
+
+Download the app : https://mega.nz/file/qooWBCZA#dIqubrgq8vuBcECx5unFoZhDUcKX6O0xFgioaiVb-to
