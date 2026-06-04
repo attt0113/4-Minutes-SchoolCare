@@ -98,7 +98,7 @@ fun StudentProfileScreen(navController: NavController, fromLevel: String) {
     val generativeModel = remember { 
         GenerativeModel(
             modelName = "gemini-3.1-flash-lite-preview", 
-            apiKey = "AIzaSyCHD_VSglccRChEjPPeK5BqtW4vQFmcPE4" 
+            apiKey = "Hidden" 
         ) 
     }
 
