@@ -1,0 +1,12 @@
+{
+  "name": "4 Minutes - School Health Sentinel",
+  "description": "Secure access to school health records and emergency response coordination system.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "AI-powered health assessment",
+    "Emergency response protocols",
+    "Real-time clinical logs"
+  ]
+}

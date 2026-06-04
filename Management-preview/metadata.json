@@ -1,0 +1,6 @@
+{
+  "name": "4 Minutes SchoolCare",
+  "description": "Authorized school clinic and pediatric emergency response dashboard with clinical sentinel tracking, active case logs, student wellness profiles, and medicine inventory surveillance.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

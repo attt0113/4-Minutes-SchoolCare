@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile - SMK CERIA HEALTH CARE</title>
+    <style>
+        body { font-family: Arial, Helvetica, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; background-color: #f0f2f5; }
+        .profile-container { background-color: white; padding: 40px; width: 480px; border-radius: 20px; border: 2px solid #cbd5e1; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); }
+        .header-title { font-size: 18px; font-weight: bold; color: #1e293b; margin-bottom: 5px; }
+        h2 { margin: 0 0 25px 0; font-size: 22px; color: #3b82f6; border-bottom: 2px solid #3b82f6; padding-bottom: 10px; }
+        .info-layout { display: flex; gap: 25px; margin-bottom: 20px; align-items: center; }
+        .p-box { width: 120px; height: 140px; border: 2px solid #cbd5e1; border-radius: 15px; display: flex; justify-content: center; align-items: center; background-color: #f8fafc; font-size: 50px; overflow: hidden; }
+        .p-box img { width: 100%; height: 100%; object-fit: cover; }
+        .details p { margin: 8px 0; font-size: 16px; color: #334155; }
+        .medical-info { background-color: #fff1f2; padding: 20px; border-radius: 15px; border-left: 5px solid #f43f5e; margin-bottom: 25px; }
+        .medical-info p { margin: 5px 0; font-size: 15px; color: #991b1b; }
+        .parents-toggle { cursor: pointer; font-weight: bold; font-size: 16px; padding: 12px 20px; border: 1.5px solid #cbd5e1; border-radius: 12px; display: inline-block; margin-bottom: 15px; background-color: white; transition: 0.2s; color: #475569; width: 100%; box-sizing: border-box; text-align: center; }
+        #parents-content { display: none; padding: 10px; background-color: #f8fafc; border-radius: 15px; margin-bottom: 25px; border: 1.5px dashed #cbd5e1; }
+        .parent-card { display: flex; gap: 15px; align-items: center; padding: 10px; border-bottom: 1px solid #e2e8f0; }
+        .parent-card:last-child { border-bottom: none; }
+        .action-bar { display: flex; justify-content: space-between; margin-top: 10px; gap: 10px; }
+        .icon-btn { min-width: 65px; height: 55px; border: 2px solid #cbd5e1; background-color: white; border-radius: 15px; display: flex; justify-content: center; align-items: center; font-size: 22px; cursor: pointer; text-decoration: none; transition: all 0.2s; position: relative; }
+        .icon-btn:hover { border-color: #3b82f6; background-color: #eff6ff; transform: translateY(-2px); }
+        .icon-btn::after { content: attr(data-tooltip); position: absolute; bottom: 65px; background-color: #1e293b; color: white; font-size: 10px; padding: 5px 8px; border-radius: 6px; white-space: nowrap; opacity: 0; pointer-events: none; }
+        .icon-btn:hover::after { opacity: 1; }
+        .btn-call { color: #ef4444; border-color: #fca5a5; }
+        .btn-emergency { color: #b91c1c; border-color: #ef4444; background-color: #fef2f2; }
+    </style>
+</head>
+<body>
+
+    <div class="profile-container">
+        <div class="header-title">SMK CERIA HEALTH CARE</div>
+        <h2><span id="display-title-name">Student</span>'s Profile</h2>
+
+        <div class="info-layout">
+            <div class="p-box">
+                <img id="student-img-display" src="" style="display:none;">
+                <span id="student-emoji-default">🧑‍🎓</span>
+            </div>
+            <div class="details">
+                <p><strong>Name:</strong> <span id="display-name">-</span></p>
+                <p><strong>Class:</strong> <span id="display-class">-</span></p>
+                <p><strong>IC Number:</strong> <span id="display-ic">-</span></p>
+            </div>
+        </div>
+
+        <div class="medical-info">
+            <p><strong>Medical History:</strong> <span id="display-history">-</span></p>
+            <p><strong>Allergy:</strong> <span id="display-allergy">-</span></p>
+        </div>
+
+        <div class="parents-toggle" onclick="toggleParents()">Parents / Guardian ⌵</div>
+        
+        <div id="parents-content">
+            <div class="parent-card" id="p1-card">
+                <div class="p-box" style="width: 60px; height: 70px; font-size: 25px;">
+                    <img id="p1-img-display" src="" style="display:none;">
+                    <span id="p1-emoji">👩‍💼</span>
+                </div>
+                <div class="details" style="font-size: 14px;">
+                    <p><strong>Name:</strong> <span id="p1-name">-</span> (<span id="p1-rel">-</span>)</p>
+                    <p><strong>Phone:</strong> <span id="p1-phone">-</span></p>
+                    <p><strong>IC:</strong> <span id="p1-ic">-</span></p>
+                </div>
+            </div>
+            <div class="parent-card" id="p2-card">
+                <div class="p-box" style="width: 60px; height: 70px; font-size: 25px;">
+                    <img id="p2-img-display" src="" style="display:none;">
+                    <span id="p2-emoji">👨‍💼</span>
+                </div>
+                <div class="details" style="font-size: 14px;">
+                    <p><strong>Name:</strong> <span id="p2-name">-</span> (<span id="p2-rel">-</span>)</p>
+                    <p><strong>Phone:</strong> <span id="p2-phone">-</span></p>
+                    <p><strong>IC:</strong> <span id="p2-ic">-</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-bar">
+            <a href="index.html" class="icon-btn" data-tooltip="Back to Main Menu">⏪</a>
+            <div style="display: flex; gap: 8px;">
+                <div class="icon-btn btn-call" data-tooltip="Call Parents" onclick="callParent()">📞👪</div>
+                <div class="icon-btn btn-emergency" data-tooltip="Emergency Call" onclick="triggerEmergency()">📞🚨</div>
+                <a href="edit-profile.html" class="icon-btn" data-tooltip="Edit Profile">📝</a>
+                <a href="records.html" class="icon-btn" data-tooltip="Medication Report">💊</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="call-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
+        <div style="background:white; padding:30px; border-radius:20px; width:340px; text-align:center; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+            <h3 id="modal-title" style="margin-top:0; color:#1e293b;">Select Action</h3>
+            <p id="modal-desc" style="font-size: 14px; color: #64748b; margin-bottom: 20px; display: none;"></p>
+            <div id="modal-buttons" style="display:flex; flex-direction:column; gap:10px;">
+                </div>
+            <button onclick="closeModal()" style="margin-top:15px; background:none; border:none; color:#64748b; cursor:pointer; font-weight:bold;">Cancel</button>
+        </div>
+    </div>
+    
+    <script>
+        window.onload = function() {
+            const targetName = localStorage.getItem('currentStudentName');
+            const studentList = JSON.parse(localStorage.getItem('allStudents')) || [];
+            const student = studentList.find(s => s.name === targetName);
+
+            if (student) {
+                document.getElementById('display-name').innerText = student.name;
+                document.getElementById('display-title-name').innerText = student.name;
+                document.getElementById('display-class').innerText = student.class;
+                document.getElementById('display-ic').innerText = student.icNumber || "-";
+                document.getElementById('display-history').innerText = student.history;
+                document.getElementById('display-allergy').innerText = student.allergy;
+
+                if (student.studentPic) {
+                    document.getElementById('student-img-display').src = student.studentPic;
+                    document.getElementById('student-img-display').style.display = "block";
+                    document.getElementById('student-emoji-default').style.display = "none";
+                }
+
+                // Load Parent 1
+                if(student.parents && student.parents[0]) {
+                    const p1 = student.parents[0];
+                    document.getElementById('p1-name').innerText = p1.name;
+                    document.getElementById('p1-phone').innerText = p1.phone;
+                    document.getElementById('p1-ic').innerText = p1.ic || "-";
+                    document.getElementById('p1-rel').innerText = p1.rel || "Guardian";
+                    if(p1.pic) {
+                        document.getElementById('p1-img-display').src = p1.pic;
+                        document.getElementById('p1-img-display').style.display = "block";
+                        document.getElementById('p1-emoji').style.display = "none";
+                    }
+                }
+
+                // Load Parent 2
+                if(student.parents && student.parents[1]) {
+                    const p2 = student.parents[1];
+                    document.getElementById('p2-name').innerText = p2.name;
+                    document.getElementById('p2-phone').innerText = p2.phone;
+                    document.getElementById('p2-ic').innerText = p2.ic || "-";
+                    document.getElementById('p2-rel').innerText = p2.rel || "Guardian";
+                    if(p2.pic) {
+                        document.getElementById('p2-img-display').src = p2.pic;
+                        document.getElementById('p2-img-display').style.display = "block";
+                        document.getElementById('p2-emoji').style.display = "none";
+                    }
+                }
+            }
+        };
+
+        function openSelectionModal(title, isEmergency) {
+            const targetName = localStorage.getItem('currentStudentName');
+            const studentList = JSON.parse(localStorage.getItem('allStudents')) || [];
+            const student = studentList.find(s => s.name === targetName);
+            
+            if(!student || !student.parents) return;
+
+            const modal = document.getElementById('call-modal');
+            const titleEl = document.getElementById('modal-title');
+            const descEl = document.getElementById('modal-desc');
+            const btnContainer = document.getElementById('modal-buttons');
+            
+            titleEl.innerText = title;
+            btnContainer.innerHTML = ""; 
+
+            if (isEmergency) {
+                descEl.style.display = "block";
+                descEl.innerText = "This will notify emergency services and alert both guardians immediately.";
+                
+                // EMERGENCY MODE: Only Hospital Button
+                const hospitalBtn = document.createElement('button');
+                hospitalBtn.style.cssText = "padding:15px; border-radius:12px; border:none; background:#ef4444; color:white; font-weight:bold; cursor:pointer; font-size:16px;";
+                hospitalBtn.innerText = "🏥 Call Hospital (999)";
+                hospitalBtn.onclick = () => {
+                    let msg = "🚨 Calling Hospital...\n\n✅ SMS Alert sent to: " + (student.parents[0].name || "Guardian");
+                    if(student.parents[1] && student.parents[1].name) msg += " & " + student.parents[1].name;
+                    alert(msg);
+                    closeModal();
+                };
+                btnContainer.appendChild(hospitalBtn);
+            } else {
+                // CALL MODE: Show Parents with Relationships
+                descEl.style.display = "none";
+                student.parents.forEach((parent) => {
+                    if(parent.name) {
+                        const btn = document.createElement('button');
+                        const color = "#3b82f6";
+                        btn.style.cssText = `padding:12px; border-radius:10px; border:1.5px solid ${color}; background:white; color:${color}; font-weight:bold; cursor:pointer;`;
+                        
+                        // Added relationship in brackets
+                        const relation = parent.rel ? ` (${parent.rel})` : "";
+                        btn.innerText = `📞 Call ${parent.name}${relation}`;
+                        
+                        btn.onclick = () => {
+                            alert(`Calling ${parent.name}...`);
+                            closeModal();
+                        };
+                        btnContainer.appendChild(btn);
+                    }
+                });
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        function toggleParents() {
+            const content = document.getElementById('parents-content');
+            content.style.display = (content.style.display === "block") ? "none" : "block";
+        }
+
+        function callParent() {
+            openSelectionModal("Select Parent to Call", false);
+        }
+
+        function triggerEmergency() {
+            openSelectionModal("🚨 EMERGENCY PROTOCOL", true);
+        }
+
+        function closeModal() {
+            document.getElementById('call-modal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

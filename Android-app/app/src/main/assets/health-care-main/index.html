@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SMK CERIA HEALTH CARE</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+
+        .dashboard-container {
+            background-color: white;
+            padding: 30px;
+            width: 500px;
+            border-radius: 20px;
+            border: 2px solid #cbd5e1;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 20px;
+            color: #1e293b;
+            border-bottom: 2px solid #3b82f6;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+        }
+
+        .search-section {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #475569;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+        }
+
+        input {
+            flex-grow: 1;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .btn-search {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 0 15px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        #results-area {
+            margin-top: 20px;
+            min-height: 60px;
+        }
+
+        .result-card {
+            display: flex;
+            justify-content: space-between;
+            background-color: #ECEFF1;
+            border: 1.5px solid #CFD8DC;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: bold;
+            color: #263238;
+        }
+
+        .action-bar {
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .icon-btn {
+            min-width: 80px;
+            height: 55px;
+            border: 2px solid #cbd5e1;
+            background-color: white;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: black;
+            padding: 0 10px;
+        }
+
+        .icon-btn:hover {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+            transform: translateY(-3px);
+        }
+
+        .icon-btn::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 65px;
+            background-color: #1e293b;
+            color: white;
+            font-size: 12px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+
+        .icon-btn:hover::after {
+            opacity: 1;
+        }
+
+        /* Removed btn-emergency styles */
+        .btn-camera:hover { background-color: #f0fdf4; border-color: #22c55e; }
+
+        /* Red Reset Button Style */
+        .btn-reset {
+            color: #ef4444 !important;
+            border-color: #fca5a5 !important;
+        }
+
+        .btn-reset:hover {
+            background-color: #fef2f2 !important;
+            border-color: #ef4444 !important;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <h2>SMK CERIA HEALTH CARE</h2>
+
+        <div class="search-section">
+            <label>Search for student:</label>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Type name here...">
+                <button class="btn-search" onclick="showResult()">🔍</button>
+            </div>
+        </div>
+
+        <div id="results-area"></div>
+
+        <div class="action-bar">
+            <a href="add-profile.html" class="icon-btn" data-tooltip="Add Student Profile">➕</a>
+            
+            <a href="reset.html" class="icon-btn btn-reset" data-tooltip="Erase all data (Temporary)">🗑️</a>
+            
+            <div style="display: flex; gap: 8px;">
+                <a href="camera.html" class="icon-btn btn-camera" data-tooltip="Camera Test">👨‍⚕️📷</a>
+
+                <button onclick="startAndroidCamera()" class="icon-btn btn-camera" data-tooltip="Camera Test" style="border: 2px solid #cbd5e1; background: white;">👨‍⚕️📷</button>
+
+                <script>
+                    function startAndroidCamera() {
+                        if (window.Android) {
+                            window.Android.startAIScan(); // 调用 Android 端的接口
+                        } else {
+                            // 如果是在普通浏览器打开，就走原来的逻辑或提示
+                            window.location.href = "camera.html";
+                        }
+                    }
+
+                    // ... 原有的 showResult 函数保持不变 ...
+                </script>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showResult() {
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            const resultsArea = document.getElementById('results-area');
+            
+            const studentList = JSON.parse(localStorage.getItem('allStudents')) || [];
+            const foundStudent = studentList.find(s => s.name.toLowerCase() === query);
+            
+            if(foundStudent) {
+                localStorage.setItem('currentStudentName', foundStudent.name);
+
+                resultsArea.innerHTML = `
+                    <a href="student-profile.html" style="text-decoration: none; display: block;">
+                        <div class="result-card" style="cursor: pointer;">
+                            <span>Name: ${foundStudent.name}</span>
+                            <span>Class: ${foundStudent.class}</span>
+                        </div>
+                    </a>
+                `;
+            } else if (query !== "") {
+                resultsArea.innerHTML = `
+                    <div class="result-card" style="background-color: #f1f5f9; border-color: #cbd5e1; color: #64748b;">
+                        <span>No student found with that name.</span>
+                    </div>
+                `;
+            }
+        }
+
+        // Removed triggerCall() function
+    </script>
+</body>
+</html>

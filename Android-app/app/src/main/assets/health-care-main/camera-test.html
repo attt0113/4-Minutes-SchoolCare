@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Test - SMK CERIA HEALTH CARE</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+
+        .camera-container {
+            background-color: white;
+            padding: 30px;
+            width: 500px;
+            border-radius: 20px;
+            border: 2px solid #cbd5e1;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1e293b;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+
+        h2 {
+            margin: 0 0 20px 0;
+            font-size: 20px;
+            text-decoration: underline;
+            color: #3b82f6;
+            text-align: left;
+        }
+
+        /* The Video Frame */
+        #video-viewport {
+            width: 100%;
+            height: 350px;
+            background-color: #1e293b;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 3px solid #cbd5e1;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scaleX(-1); /* Mirrors the camera so it feels natural */
+        }
+
+        .status-msg {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 15px;
+        }
+
+        button {
+            flex: 1;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-back { background-color: #94a3b8; color: white; }
+        .btn-capture { background-color: #3b82f6; color: white; }
+        
+        button:hover { opacity: 0.9; }
+        button:active { transform: scale(0.98); }
+    </style>
+</head>
+<body>
+
+    <h1> This function is not imported yet. Please wait...</h1>
+
+    <div class="camera-container">
+        <div class="header-title">SMK CERIA HEALTH CARE</div>
+        <h2>Camera Diagnostics</h2>
+
+        <div id="video-viewport">
+            <video id="webcam" autoplay playsinline></video>
+        </div>
+
+        <p class="status-msg" id="status">Status: Waiting for permission...</p>
+
+        <div class="button-container">
+            <button class="btn-back" onclick="stopCamera()">Back</button>
+            <button class="btn-capture" onclick="takePhoto()">📸 Capture Test</button>
+        </div>
+    </div>
+
+    <script>
+        const video = document.getElementById('webcam');
+        const statusText = document.getElementById('status');
+
+        // Start the camera automatically when the page loads
+        async function startCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+                statusText.innerText = "Status: Camera Live 🟢";
+            } catch (err) {
+                console.error("Error accessing camera: ", err);
+                statusText.innerText = "Status: Camera Access Denied ❌";
+                statusText.style.color = "#ef4444";
+            }
+        }
+
+        function stopCamera() {
+            const stream = video.srcObject;
+            if (stream) {
+                const tracks = stream.getTracks();
+                tracks.forEach(track => track.stop());
+            }
+            window.location.href = 'index.html';
+        }
+
+        function takePhoto() {
+            alert("Snapshot captured! Diagnostic test passed.");
+            // In a real app, you would draw the video frame to a <canvas> here.
+        }
+
+        // Initialize camera
+        startCamera();
+    </script>
+</body>
+</html>

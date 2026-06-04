@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile - SMK CERIA HEALTH CARE</title>
+    <style>
+        body { font-family: Arial, Helvetica, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; background-color: #f0f2f5; padding: 20px 0; }
+        .edit-container { background-color: white; padding: 40px; width: 450px; border-radius: 20px; border: 2px solid #cbd5e1; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); }
+        .header-title { font-size: 18px; font-weight: bold; color: #1e293b; margin-bottom: 5px; }
+        h2 { margin: 0 0 25px 0; font-size: 20px; color: #3b82f6; border-bottom: 2px solid #3b82f6; padding-bottom: 10px; }
+        h3 { font-size: 16px; color: #475569; margin-top: 20px; border-left: 4px solid #3b82f6; padding-left: 10px; }
+        .input-group { margin-bottom: 12px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; color: #475569; font-size: 13px; }
+        input { width: 100%; box-sizing: border-box; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 10px; font-size: 14px; outline: none; transition: border-color 0.3s; }
+        input:focus { border-color: #3b82f6; }
+        input[type="file"] { padding: 8px; background-color: #f8fafc; font-size: 12px; }
+        hr { border: 0; border-top: 1.5px solid #e2e8f0; margin: 25px 0; }
+        .button-container { display: flex; gap: 15px; margin-top: 30px; }
+        button { flex: 1; border: none; padding: 12px; font-size: 16px; font-weight: bold; border-radius: 12px; cursor: pointer; transition: 0.2s; }
+        .btn-cancel { background-color: #94a3b8; color: white; }
+        .btn-save { background-color: #10b981; color: white; }
+        button:active { transform: scale(0.98); }
+    </style>
+</head>
+<body>
+
+    <div class="edit-container">
+        <div class="header-title">SMK CERIA HEALTH CARE</div>
+        <h2>Edit Profile Information</h2>
+        
+        <div class="input-group"><label>Full Name</label><input type="text" id="edit-name"></div>
+        <div class="input-group"><label>Class</label><input type="text" id="edit-class"></div>
+        <div class="input-group"><label>IC Number</label><input type="text" id="edit-ic"></div>
+        <div class="input-group"><label>Student Photo</label><input type="file" id="edit-pic-student" accept="image/*"></div>
+        <div class="input-group"><label>Medical History</label><input type="text" id="edit-history"></div>
+        <div class="input-group"><label>Allergy</label><input type="text" id="edit-allergy"></div>
+
+        <hr>
+        <h3>Parent / Guardian 1</h3>
+        <div class="input-group"><label>Name</label><input type="text" id="p1-name"></div>
+        <div class="input-group"><label>Phone</label><input type="text" id="p1-phone"></div>
+        <div class="input-group"><label>IC Number</label><input type="text" id="p1-ic"></div>
+        <div class="input-group"><label>Relationship</label><input type="text" id="p1-rel"></div>
+        <div class="input-group"><label>Photo</label><input type="file" id="p1-pic" accept="image/*"></div>
+
+        <hr>
+        <h3>Parent / Guardian 2</h3>
+        <div class="input-group"><label>Name</label><input type="text" id="p2-name"></div>
+        <div class="input-group"><label>Phone</label><input type="text" id="p2-phone"></div>
+        <div class="input-group"><label>IC Number</label><input type="text" id="p2-ic"></div>
+        <div class="input-group"><label>Relationship</label><input type="text" id="p2-rel"></div>
+        <div class="input-group"><label>Photo</label><input type="file" id="p2-pic" accept="image/*"></div>
+        
+        <div class="button-container">
+            <button class="btn-cancel" onclick="window.location.href='student-profile.html'">Cancel</button>
+            <button class="btn-save" onclick="updateProfile()">Save Changes</button>
+        </div>
+    </div>
+
+    <script>
+        const toBase64 = file => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+
+        async function updateProfile() {
+            let studentList = JSON.parse(localStorage.getItem('allStudents')) || [];
+            const originalName = localStorage.getItem('currentStudentName');
+
+            // Find existing data to preserve images if new ones aren't uploaded
+            const existingStudent = studentList.find(s => s.name === originalName);
+
+            const studentData = {
+                name: document.getElementById('edit-name').value,
+                class: document.getElementById('edit-class').value,
+                icNumber: document.getElementById('edit-ic').value,
+                history: document.getElementById('edit-history').value,
+                allergy: document.getElementById('edit-allergy').value,
+                studentPic: existingStudent ? existingStudent.studentPic : "",
+                parents: [
+                    {
+                        name: document.getElementById('p1-name').value,
+                        phone: document.getElementById('p1-phone').value,
+                        ic: document.getElementById('p1-ic').value,
+                        rel: document.getElementById('p1-rel').value,
+                        pic: (existingStudent && existingStudent.parents[0]) ? existingStudent.parents[0].pic : ""
+                    },
+                    {
+                        name: document.getElementById('p2-name').value,
+                        phone: document.getElementById('p2-phone').value,
+                        ic: document.getElementById('p2-ic').value,
+                        rel: document.getElementById('p2-rel').value,
+                        pic: (existingStudent && existingStudent.parents[1]) ? existingStudent.parents[1].pic : ""
+                    }
+                ]
+            };
+
+            // Process New Student Photo
+            const sFile = document.getElementById('edit-pic-student').files[0];
+            if (sFile) studentData.studentPic = await toBase64(sFile);
+
+            // Process Parent Photos
+            const p1File = document.getElementById('p1-pic').files[0];
+            if (p1File) studentData.parents[0].pic = await toBase64(p1File);
+
+            const p2File = document.getElementById('p2-pic').files[0];
+            if (p2File) studentData.parents[1].pic = await toBase64(p2File);
+
+            // Update the list
+            const index = studentList.findIndex(s => s.name === originalName);
+            if (index !== -1) {
+                studentList[index] = studentData;
+            } else {
+                studentList.push(studentData);
+            }
+
+            localStorage.setItem('allStudents', JSON.stringify(studentList));
+            localStorage.setItem('currentStudentName', studentData.name);
+
+            alert("Data Updated Successfully!");
+            window.location.href = 'student-profile.html';
+        }
+
+        window.onload = function() {
+            const target = localStorage.getItem('currentStudentName');
+            const student = (JSON.parse(localStorage.getItem('allStudents')) || []).find(s => s.name === target);
+
+            if(student) {
+                document.getElementById('edit-name').value = student.name;
+                document.getElementById('edit-class').value = student.class;
+                document.getElementById('edit-ic').value = student.icNumber || "";
+                document.getElementById('edit-history').value = student.history;
+                document.getElementById('edit-allergy').value = student.allergy;
+                
+                if(student.parents[0]) {
+                    document.getElementById('p1-name').value = student.parents[0].name;
+                    document.getElementById('p1-phone').value = student.parents[0].phone;
+                    document.getElementById('p1-ic').value = student.parents[0].ic || "";
+                    document.getElementById('p1-rel').value = student.parents[0].rel || "";
+                }
+                if(student.parents[1]) {
+                    document.getElementById('p2-name').value = student.parents[1].name;
+                    document.getElementById('p2-phone').value = student.parents[1].phone;
+                    document.getElementById('p2-ic').value = student.parents[1].ic || "";
+                    document.getElementById('p2-rel').value = student.parents[1].rel || "";
+                }
+            }
+        };
+    </script>
+</body>
+</html>

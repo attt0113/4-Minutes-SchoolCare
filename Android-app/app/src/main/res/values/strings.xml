@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Try MLKit</string>
+    <string name="select_image">Select Image</string>
+    <string name="detected_face_image">Detected face image</string>
+    <string name="result_title">Facial expression</string>
+    <string name="result_not_analyzed">Result has not analyse</string>
+    <string name="result_detail_placeholder">Placeholder of details</string>
+    <string name="take_photo">Take Photo</string>
+</resources>

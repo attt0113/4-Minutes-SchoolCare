@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function() {
+        try {
+          var originalFetch = window.fetch;
+          var fetchVal = originalFetch;
+          var targets = [window, Window.prototype];
+          for (var i = 0; i < targets.length; i++) {
+            try {
+              Object.defineProperty(targets[i], 'fetch', {
+                get: function() {
+                  return fetchVal;
+                },
+                set: function(val) {
+                  fetchVal = val;
+                },
+                configurable: true,
+                enumerable: true
+              });
+              break;
+            } catch (e1) {
+              // continue to next target
+            }
+          }
+        } catch (e) {
+          console.warn('Unable to patch window.fetch:', e);
+        }
+      })();
+    </script>
+    <title>4 Minutes SchoolCare</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #005bbf;
+  --color-primary-container: #1a73e8;
+  --color-on-primary: #ffffff;
+  
+  --color-secondary: #006b5f;
+  --color-secondary-container: #8df5e4;
+  --color-on-secondary-container: #007165;
+  
+  --color-tertiary: #bb1712;
+  --color-tertiary-container: #df3429;
+  --color-on-tertiary: #ffffff;
+  
+  --color-background: #f9f9ff;
+  --color-surface: #f9f9ff;
+  --color-surface-container: #ecedf7;
+  --color-surface-container-low: #f2f3fd;
+  --color-surface-container-high: #e6e8f2;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-highest: #e0e2ec;
+  
+  --color-on-surface: #191c23;
+  --color-on-surface-variant: #414754;
+  
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+  --radius-3xl: 2.5rem;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-on-surface font-sans antialiased;
+  }
+}
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.hd-shadow {
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.02),
+    0 10px 15px -3px rgba(0, 0, 0, 0.03),
+    0 20px 25px -5px rgba(0, 0, 0, 0.04),
+    0 30px 40px -10px rgba(0, 0, 0, 0.05);
+}
+
+.hd-logo-shadow {
+  filter: drop-shadow(0 12px 24px rgba(0, 91, 191, 0.15));
+}
+
+@keyframes scan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+.scan-line {
+  animation: scan 2s linear infinite;
+}

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Record - SMK CERIA HEALTH CARE</title>
+    <style>
+        body { 
+            font-family: Arial, Helvetica, sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            margin: 0; 
+            background-color: #f0f2f5; 
+        }
+
+        .form-container { 
+            background-color: white; 
+            padding: 40px; 
+            width: 450px; 
+            border-radius: 20px; 
+            border: 2px solid #cbd5e1; 
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); 
+        }
+
+        .header-title { font-size: 18px; font-weight: bold; color: #1e293b; margin-bottom: 5px; }
+        
+        h2 { 
+            margin: 0 0 25px 0; 
+            font-size: 20px; 
+            color: #3b82f6; 
+            border-bottom: 2px solid #3b82f6; 
+            padding-bottom: 10px; 
+        }
+
+        .form-group { margin-bottom: 15px; }
+
+        label { 
+            display: block; 
+            margin-bottom: 8px; 
+            font-size: 14px; 
+            font-weight: bold; 
+            color: #475569; 
+        }
+
+        input { 
+            width: 100%; 
+            padding: 12px; 
+            border: 1.5px solid #cbd5e1; 
+            border-radius: 12px; 
+            box-sizing: border-box; 
+            font-size: 14px; 
+            transition: border-color 0.2s;
+        }
+
+        input:focus { outline: none; border-color: #3b82f6; }
+
+        /* Time Selection Group */
+        .time-input-container {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-time-option {
+            background: white;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.2s;
+        }
+
+        .btn-time-option:hover { border-color: #3b82f6; background-color: #eff6ff; }
+
+        /* Footer Actions */
+        .footer-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .icon-btn {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 70px;
+            height: 55px;
+            border: 2px solid #cbd5e1;
+            background-color: white;
+            border-radius: 12px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: black;
+            font-size: 24px;
+        }
+
+        .icon-btn:hover {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+            transform: translateY(-3px);
+        }
+
+        /* Tooltip logic */
+        .icon-btn::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 65px;
+            background-color: #1e293b;
+            color: white;
+            font-size: 12px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+
+        .icon-btn:hover::after { opacity: 1; }
+
+        /* Modal Style (Same as Calling Popup) */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-box {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            width: 320px;
+            text-align: center;
+            border: 2px solid #cbd5e1;
+        }
+
+        .modal-box h3 { margin-top: 0; color: #1e293b; font-size: 18px; }
+
+        .modal-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1.5px solid #3b82f6;
+            background: white;
+            color: #3b82f6;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .modal-btn:hover { background: #eff6ff; }
+        .modal-btn.secondary { border-color: #64748b; color: #64748b; }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <div class="header-title">SMK CERIA HEALTH CARE</div>
+    <h2 id="studentHeading">Add Medication Record</h2>
+
+    <div class="form-group">
+        <label>Date</label>
+        <input type="date" id="med-date">
+    </div>
+
+    <div class="form-group">
+        <label>Time</label>
+        <div class="time-input-container">
+            <input type="text" id="med-time" placeholder="HH:MM" readonly>
+            <button class="btn-time-option" onclick="openTimeModal()" title="Select Time Mode">🕒</button>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Medicine Taken</label>
+        <input type="text" id="med-name" placeholder="e.g. Paracetamol">
+    </div>
+
+    <div class="form-group">
+        <label>Number of Meds / Dosage</label>
+        <input type="text" id="med-amount" placeholder="e.g. 2 tablets / 10ml">
+    </div>
+
+    <div class="footer-actions">
+        <a href="records.html" class="icon-btn" data-tooltip="Back to records">⏪</a>
+        <button class="icon-btn" data-tooltip="Add record" onclick="saveRecord()">➕</button>
+    </div>
+</div>
+
+<div class="modal-overlay" id="timeModal">
+    <div class="modal-box">
+        <h3>Select Time Option</h3>
+        <button class="modal-btn" onclick="setAutoTime()">⏱️ Use System Time</button>
+        <button class="modal-btn" onclick="setManualTime()">⌨️ Type Manually</button>
+        <button class="modal-btn secondary" onclick="closeModal()">Cancel</button>
+    </div>
+</div>
+
+<script>
+    // Set default date to today
+    document.getElementById('med-date').valueAsDate = new Date();
+
+    const currentStudent = localStorage.getItem('currentStudentName');
+    if(currentStudent) {
+        document.getElementById('studentHeading').innerText = `Record for ${currentStudent}`;
+    }
+
+    function openTimeModal() {
+        document.getElementById('timeModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('timeModal').style.display = 'none';
+    }
+
+    function setAutoTime() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        document.getElementById('med-time').value = `${hours}:${minutes}`;
+        document.getElementById('med-time').readOnly = true;
+        closeModal();
+    }
+
+    function setManualTime() {
+        const timeInput = document.getElementById('med-time');
+        timeInput.readOnly = false;
+        timeInput.value = "";
+        timeInput.placeholder = "Enter HH:MM";
+        timeInput.focus();
+        closeModal();
+    }
+
+    function saveRecord() {
+        const date = document.getElementById('med-date').value;
+        const time = document.getElementById('med-time').value;
+        const name = document.getElementById('med-name').value;
+        const amount = document.getElementById('med-amount').value;
+
+        if(!date || !time || !name || !amount) {
+            alert("Please fill in all fields.");
+            return;
+        }
+
+        // Create the record object
+        const newRecord = {
+            id: Date.now(), 
+            date: date,
+            time: time,
+            name: name,
+            amount: amount
+        };
+
+        // Save to a unique key for THIS student
+        const storageKey = `medRecords_${currentStudent}`;
+        const existingRecords = JSON.parse(localStorage.getItem(storageKey)) || [];
+        
+        existingRecords.push(newRecord);
+        localStorage.setItem(storageKey, JSON.stringify(existingRecords));
+
+        alert("Record saved successfully!");
+        window.location.href = 'records.html';
+    }
+</script>
+
+</body>
+</html>
